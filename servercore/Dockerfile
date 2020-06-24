@@ -1,5 +1,5 @@
 # escape=`
-FROM microsoft/iis
+FROM mcr.microsoft.com/windows/servercore/iis
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'Continue'; $verbosePreference='Continue';"]
 WORKDIR app
 #Adding Windows Authentication Feature since not installed in default image
@@ -17,4 +17,3 @@ RUN Import-Module IISAdministration; `
     (Get-IISServerManager).Sites[0].Applications[0].VirtualDirectories[0].PhysicalPath = 'c:\inetpub\wwwroot\app' ; `
     Stop-IISCommitDelay
 EXPOSE 80
-
