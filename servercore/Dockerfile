@@ -1,6 +1,6 @@
 # escape=`
 FROM mcr.microsoft.com/windows/servercore/iis
-SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'Continue'; $verbosePreference='Continue';"]
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Continue'; $ProgressPreference = 'Continue'; $verbosePreference='Continue';"]
 WORKDIR app
 #Adding Windows Authentication Feature since not installed in default image
 RUN Install-WindowsFeature "Web-Windows-Auth", "Web-Asp-Net45"
@@ -24,9 +24,8 @@ RUN Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'syst
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.applicationHost/log/centralW3CLogFile' -name 'directory' -value 'c:\iislog'
 
 # Make sure the file exists to avoid errors.
-CMD Start-Service W3SVC; `  
+RUN Start-Service W3SVC; `  
     Invoke-WebRequest http://localhost -UseBasicParsing | Out-Null; `
-    netsh http flush logbuffer | Out-Null; `
-    Get-Content -path 'c:\iislog\W3SVC\u_extend1.log' -Tail 1 -Wait 
+    netsh http flush logbuffer | Out-Null
 
 EXPOSE 80
