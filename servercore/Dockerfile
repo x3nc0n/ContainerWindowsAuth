@@ -27,7 +27,5 @@ RUN Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'syst
 RUN Start-Service W3SVC; `  
     Invoke-WebRequest http://localhost -UseBasicParsing | Out-Null; `
     netsh http flush logbuffer | Out-Null
-    
-CMD Get-Content -path 'c:\iislog\W3SVC\u_extend1.log' -Tail 1 -Wait 
 
 EXPOSE 80
