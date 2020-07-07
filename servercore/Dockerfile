@@ -1,5 +1,5 @@
 # escape=`
-FROM mcr.microsoft.com/windows/servercore/iis
+FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Continue'; $ProgressPreference = 'Continue'; $verbosePreference='Continue';"]
 WORKDIR app
 #Adding Windows Authentication Feature since not installed in default image
