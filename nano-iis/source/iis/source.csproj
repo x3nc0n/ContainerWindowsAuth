@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>86f24db9-7847-4c84-a7ca-ffd4a7119c3c</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/884fc79a-af47-4cad-bf2f-f5901651c98c/resourcegroups/p66-aks-gmsa-domain/providers/Microsoft.Insights/components/p66-aks-gmsa-app-insights</ApplicationInsightsResourceId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
   </ItemGroup>
 
