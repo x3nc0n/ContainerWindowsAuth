@@ -1,0 +1,50 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: x3nc0nwus2.azurecr.io
+        username: ${{ secrets.acr_x3nc0nwus2_username }}
+        password: ${{ secrets.acr_x3nc0nwus2_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/servercore" -f  "servercore/Dockerfile" -t x3nc0nwus2.azurecr.io/x3nc0naks:${{ github.sha }}
+        docker push x3nc0nwus2.azurecr.io/x3nc0naks:${{ github.sha }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_x3nc0naks_kubeConfig }}
+      id: login
+    
+    - name: Create namespace
+      run: |
+        namespacePresent=`kubectl get namespace | grep x3nc0naks6e5e | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace x3nc0naks6e5e`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: x3nc0naks6e5e
+        container-registry-url: x3nc0nwus2.azurecr.io
+        container-registry-username: ${{ secrets.acr_x3nc0nwus2_username }}
+        container-registry-password: ${{ secrets.acr_x3nc0nwus2_password }}
+        secret-name: x3nc0naksdockerauth
+       
+    - uses: azure/k8s-deploy@v1
+      with:
+        namespace: x3nc0naks6e5e
+        manifests: |
+          manifests/deployment.yml
+          manifests/service.yml
+        images: |
+          x3nc0nwus2.azurecr.io/x3nc0naks:${{ github.sha }}
+        imagepullsecrets: |
+          x3nc0naksdockerauth
