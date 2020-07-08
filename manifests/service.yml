@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: "x3nc0naks-e4ad"
+    labels:
+        app: "x3nc0naks-e4ad"
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+    selector:
+        app: "x3nc0naks-e4ad"
