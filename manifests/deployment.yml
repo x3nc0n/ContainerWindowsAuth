@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: "x3nc0naks-e4ad"
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: "x3nc0naks-e4ad"
+    spec:
+      containers:
+        - name: "x3nc0naks-e4ad"
+          image: "x3nc0nwus2.azurecr.io/x3nc0naks"
+          ports:
+          - containerPort: 80
