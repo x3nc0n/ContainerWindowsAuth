@@ -18,6 +18,8 @@ RUN Import-Module IISAdministration; `
     (Get-IISServerManager).Sites[0].Applications[0].VirtualDirectories[0].PhysicalPath = 'c:\inetpub\wwwroot\app' ; `
     Stop-IISCommitDelay
 
+RUN %windir%\system32\inetsrv\appcmd.exe set AppPool DefaultAppPool -processModel.identityType:NetworkService
+
 # Make logs readable by docker/k8s
 RUN Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.applicationHost/log' -name 'centralLogFileMode' -value 'CentralW3C'; `  
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.applicationHost/log/centralW3CLogFile' -name 'truncateSize' -value 4294967295; `
@@ -28,7 +30,5 @@ RUN Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'syst
 RUN Start-Service W3SVC; `  
     Invoke-WebRequest http://localhost -UseBasicParsing | Out-Null; `
     netsh http flush logbuffer | Out-Null
-
-USER "NT AUTHORITY\NETWORK SERVICE"
 
 EXPOSE 80
