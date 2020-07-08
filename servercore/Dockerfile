@@ -1,6 +1,7 @@
 # escape=`
 FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Continue'; $ProgressPreference = 'Continue'; $verbosePreference='Continue';"]
+
 WORKDIR app
 #Adding Windows Authentication Feature since not installed in default image
 RUN Install-WindowsFeature "Web-Windows-Auth", "Web-Asp-Net45"
@@ -27,5 +28,7 @@ RUN Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'syst
 RUN Start-Service W3SVC; `  
     Invoke-WebRequest http://localhost -UseBasicParsing | Out-Null; `
     netsh http flush logbuffer | Out-Null
+
+USER "NT AUTHORITY\NETWORK SERVICE"
 
 EXPOSE 80

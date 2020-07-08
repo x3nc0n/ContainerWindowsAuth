@@ -13,8 +13,8 @@ variables:
   dockerRegistryServiceConnection: '1d1b48b6-1484-4a77-8a7b-43a5061bb3aa'
   imageRepository: 'containerwindowsauth'
   containerRegistry: 'raincodemigration.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/nano-iis/Dockerfile'
-  tag: '$(Build.BuildId)'
+  dockerfilePath: '$(Build.SourcesDirectory)/servercore/Dockerfile'
+  tag: 'servercore'
   
   # Agent VM image name
   vmImageName: 'windows-2019'
